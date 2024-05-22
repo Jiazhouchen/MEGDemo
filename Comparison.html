@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comparisons</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jersey 10">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jersey 25">
+</head>
+<style>
+    div {
+        border-style: solid;
+        border-width: 0px;
+        border-color: green;
+    }
+    #story_name {
+        font-family: "Jersey 10", sans-serif;
+    }
+
+    button {
+        min-height: 2vh;
+        margin: 3px;
+        font-family: "Jersey 25", sans-serif;
+        font-size: 2em;
+        border-width: 2px;
+        background-color: white;
+        border-color: black;
+        border-style: dashed;
+    }
+    button:hover {
+        border-style: solid;
+        background-color: black;
+        border-color: white;
+        color: white;
+    }
+
+    #action_panel {
+        display: flex;
+        justify-content: space-around;
+    }
+    #action_panel2 {
+        display: flex;
+        justify-content: space-around;
+    }
+    #graphs {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        max-width: 99vw;
+        object-fit: contain;
+    }
+    #select_stories {
+        min-height: 2vh;
+        margin: 3px;
+        font-family: "Jersey 25", sans-serif;
+        font-size: 3em;
+        border-width: 2px;
+        border-color: black;
+        border-style: dashed;
+        -webkit-tap-highlight-color: transparent;
+    }
+    #select_stories:focus {
+        border-style: solid;
+        background-color: black;
+        color: white;
+        -webkit-tap-highlight-color: transparent;
+    }
+</style>
+<body>
+<div id="action_panel">
+    <button id="prev" onclick="selButtonAction(this)">Prev</button>
+    <select name="stories" id="select_stories" onchange='selChange(this)'>
+        <option value="">- -</option>
+    </select>
+    <button id="next" onclick="selButtonAction(this)">Next</button>
+</div>
+<div id="action_panel2">
+    <div>
+        <button id="sum" onclick="graphButtonAction(this)">Summary</button>
+        <button id="rnd" onclick="graphButtonAction(this)">Random</button>
+        <button id="nxt" onclick="graphButtonAction(this)">Next 50</button>
+        <button id="ori" onclick="graphButtonAction(this)">Original</button>
+        <button id="wit" onclick="graphButtonAction(this)">Within</button>
+    </div>
+</div>
+<div id="graphs">
+
+</div>
+</body>
+<script>
+    selGrid = {
+        'sum':0,
+        'rnd':0,
+        'nxt':0,
+        'ori':0,
+        'wit':0,
+    }
+    curStory = ''
+
+    UrlExists = function (url) {
+        var http = new XMLHttpRequest();
+        http.open('HEAD', url, false);
+        http.send();
+        return http.status!==404;
+    }
+    const stories = [
+        {name: 'adollshouse', pName: "A Doll's House"},
+        {name: 'theclosetthatateeverything', pName: "The Closet That Ate Everything"},
+        {name: 'haveyoumethimyet', pName: "Have You Met Him Yet"},
+        {name: 'adventuresinsayingyes', pName: "Adventures in Saying Yes"},
+        {name: 'legacy', pName: "Legacy"},
+        {name: 'naked', pName: "Naked"},
+        {name: 'itsabox', pName: "It's a Box"},
+        {name: 'undertheinfluence', pName: "Under the Influence"},
+        {name: 'hangtime', pName: "Hang Time"},
+        {name: 'buck', pName: "Buck"},
+        {name: 'alternateithicatom', pName: "Alternate Ithica Tom"},
+        {name: 'howtodraw', pName: "How to Draw"},
+        {name: 'wheretheressmoke', pName: "Where There's Smoke"},
+        {name: 'sloth', pName: "Sloth"},
+        {name: 'tildeath', pName: "'Til Death"},
+        {name: 'souls', pName: "Souls"},
+        {name: 'thatthingonmyarm', pName: "That Thing on My Arm"},
+        {name: 'inamoment', pName: "In a Moment"}
+    ]
+    const sel = document.getElementById('select_stories')
+    for (s of stories) {
+        if (UrlExists('plots/'+s.name+'_embedding_summary.png')) {
+            console.log(s.name)
+            const opt = document.createElement('option')
+            opt.value = s.name
+            opt.text  = s.pName
+            sel.add(opt,null)
+        }
+    }
+
+    selChange=function(a) {
+        console.log(a.value)
+        curStory = a.value
+        document.getElementById('sum').click()
+    }
+
+    selButtonAction=function (e) {
+
+        curIndex = sel.selectedIndex
+
+        switch (e.id) {
+            case 'next':
+                curIndex = curIndex+1
+                break;
+            case 'prev':
+                curIndex = curIndex-1
+                break;
+        }
+        if (curIndex < 0) {
+            curIndex = 0
+        }
+        console.log(curIndex)
+    }
+    selGrid = {
+        'sum':0,
+        'rnd':0,
+        'nxt':0,
+        'ori':0,
+        'wit':0,
+    }
+    graphButtonAction = function (e) {
+        console.log('clicked'+e.id)
+        let inWord = 'summary'
+        if (e.id === 'rnd') {
+            inWord = 'random'
+        } else if (e.id === 'nxt') {
+            inWord = 'next50'
+        } else if (e.id === 'ori') {
+            inWord = 'original'
+        } else if (e.id === 'wit') {
+            inWord = 'within'
+        }
+
+
+        if (curStory==='') {
+            return ''
+        }
+
+        let activeX = selGrid[e.id] === 1
+        console.log(activeX)
+        if (activeX) {
+            e.style.color = 'black'
+            e.style.backgroundColor = 'white'
+            selGrid[e.id] = 0
+            document.getElementById(e.id+'graph').remove()
+
+        } else {
+            e.style.backgroundColor = 'black'
+            e.style.color = 'white'
+            selGrid[e.id] = 1
+            const imgX = document.createElement('img')
+            imgX.src = 'plots/' + curStory + '_embedding_'+ inWord +'.png'
+            imgX.className = 'graph'
+            imgX.id = e.id+'graph'
+            document.getElementById('graphs').appendChild(imgX)
+        }
+
+
+    }
+
+</script>
+
+
+</html>

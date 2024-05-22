@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard for MEG Data</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jersey 10">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jersey 25">
+</head>
+<style>
+    body {
+        background-color: whitesmoke;
+
+    }
+    div {
+        border-style: solid;
+        border-width: 0px;
+        border-color: green;
+    }
+    button {
+        min-height: 3vh;
+        margin: 3px;
+        font-family: "Jersey 25", sans-serif;
+        font-size: 2em;
+        border-width: 2px;
+        border-color: black;
+        border-style: dashed;
+    }
+    button:hover {
+        border-style: solid;
+        background-color: black;
+        color: white;
+    }
+    .title {
+        text-align:center;
+        padding: 20px;
+        font-family: "Jersey 25", sans-serif;
+    }
+    .id {
+        font-family: "Jersey 10", sans-serif;
+        font-size: 1.7em;
+    }
+    .wrap{
+        display: flex;
+        flex-direction: column;
+        min-height: 90vh;
+        min-width: 90vw;
+        border-style: solid;
+        border-width: 2px;
+        border-color: black;
+        border-radius: 0px;
+        backdrop-filter: blur(10px);
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        padding: 10px 20px 10px 20px;
+    }
+    .subj {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        max-width: 200px;
+        min-width: 100px;
+
+        aspect-ratio: 1/1.6;
+
+        padding: 10px;
+        border-color: black;
+        border-style: groove;
+        border-width: 5px;
+    }
+    .sess {
+        display: flex;
+        flex-direction: row;
+        border-width: 2px;
+        border-color: black;
+        max-height: 50px;
+        aspect-ratio: 1/3;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+    .sess div {
+        min-height: 20vh;
+        width: 100vw;
+        border-width: 0;
+        border-color: black;
+    }
+    .sess_complete {
+        background-color: black;
+        backdrop-filter: blur(10px);
+    }
+    .actions_panel {
+        display: flex;
+        flex-direction: column;
+    }
+    .overlay {
+        position: absolute;
+        display: flex;
+        background-color: rgb(214 214 214 / 40%);
+        opacity: 80%;
+        backdrop-filter: blur(10px);
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        margin: 0 0 0 0;
+    }
+    .close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+</style>
+<body>
+    <div id="wrap" class="wrap">
+        <h1 id="title" class="title">Decode Emotion Study</h1>
+        <div id="all_subjects" class="all_subjects">
+            <div id="MEG001" class="subj">
+                <h2 class="id">MEG001</h2>
+                <div class="sess">
+                    <div class="sess_complete"></div>
+                    <div class="sess_complete"></div>
+                    <div class="sess_incomplete"></div>
+                </div>
+                <div class="actions_panel">
+                    <button>To-do list</button>
+                    <button>Details</button>
+                    <button>Notes</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="overlay" class="overlay">
+        <div id="prompt" class="content">
+
+        </div>
+        <button id="close" class="close">
+            X
+        </button>
+    </div>
+</body>
+<script>
+
+    //create a subject
+    class promptContent {
+
+        constructor() {
+            this.backdrop = document.getElementById('overlay')
+            this.x = document.getElementById('close')
+            this.content = document.getElementById('prompt')
+            console.log('new class')
+        }
+
+        get status() {
+            return this.status
+        }
+
+        close() {
+            this.backdrop.opacity = '0%'
+            this.x.opacity = '0%'
+            this.content.opacity = '0%'
+            this.backdrop.display = 'none'
+        }
+
+        open() {
+            this.backdrop.opacity = '100%'
+            this.x.opacity = '100%'
+            this.content.opacity = '100%'
+        }
+    }
+
+    promptContorl = new promptContent()
+    promptContorl.close()
+
+
+</script>
+</html>
