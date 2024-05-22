@@ -103,7 +103,7 @@
     ]
     const sel = document.getElementById('select_stories')
     for (s of stories) {
-        if (UrlExists(s.name+'_emoTimeline.pdf')) {
+        if (UrlExists('pdfs/'+s.name+'_emoTimeline.pdf')) {
             console.log(s.name)
             const opt = document.createElement('option')
             opt.value = s.name
@@ -114,8 +114,8 @@
 
     selChange=function(a) {
         console.log(a.value)
-        document.getElementById('g1').setAttribute('src',a.value+'_emoTimeline.pdf')
-        document.getElementById('g2').setAttribute('src',a.value+'_emoTimeline_noNeutral.pdf')
+        document.getElementById('g1').setAttribute('src','pdfs/'+a.value+'_emoTimeline.pdf')
+        document.getElementById('g2').setAttribute('src','pdfs/'+a.value+'_emoTimeline_noNeutral.pdf')
     }
 
     selButtonAction=function (e) {
@@ -134,6 +134,8 @@
             curIndex = 0
         }
         console.log(curIndex)
+        sel.selectedIndex = curIndex
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
 </script>

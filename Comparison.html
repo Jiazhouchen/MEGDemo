@@ -29,7 +29,7 @@
     button:hover {
         border-style: solid;
         background-color: black;
-        border-color: white;
+        border-color: black;
         color: white;
     }
 
@@ -136,6 +136,18 @@
     selChange=function(a) {
         console.log(a.value)
         curStory = a.value
+        selGrid = {
+            'sum':0,
+            'rnd':0,
+            'nxt':0,
+            'ori':0,
+            'wit':0,
+        }
+        document.getElementById('graphs').innerHTML=''
+        for (const [key, value] of Object.entries(selGrid)) {
+            document.getElementById(key).style.color = 'black'
+            document.getElementById(key).style.backgroundColor = 'white'
+        }
         document.getElementById('sum').click()
     }
 
@@ -155,6 +167,8 @@
             curIndex = 0
         }
         console.log(curIndex)
+        sel.selectedIndex = curIndex
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
     }
     selGrid = {
         'sum':0,
